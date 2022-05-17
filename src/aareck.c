@@ -1,9 +1,9 @@
 /* 
-aareck -- aare check; hydraulic and weather data on switzerland's most beautiful river "Aare"
+aareck -- aare check; Reports hydraulic and weather data of the most beautiful river in Switzerland, "the Aare".
    
 MIT License
 
-Copyright (c) 2022 Sven Zaugg - zaugg84[at]gmail.com
+Copyright (c) 2022 Sven Zaugg <zaugg84@gmail.com>
 
 Permission is hereby granted, free of charge, to any person obtaining a copy
 of this software and associated documentation files (the "Software"), to deal

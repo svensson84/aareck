@@ -1,0 +1,6 @@
+# npm
+/npm/npm-github.env
+/npm/npm-npmjs.env
+
+# no dependencies available; un-ignore if that changes
+/package-lock.json

@@ -1,0 +1,27 @@
+{
+  "name": "aareck",
+  "version": "v0.1.0-rc2",
+  "description": "aareck -- aare check; Reports hydraulic and weather data of the most beautiful river in Switzerland, \"the Aare\"",
+  "homepage": "https://github.com/svensson84/aareck",
+  "license": "MIT",
+  "author": "Sven Zaugg <zaugg84@gmail.com>",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/svensson84/aareck.git"
+  },
+  "files": [
+  ],
+  "directories": {
+    "src": "src"
+  },
+  "scripts": {
+  },
+  "keywords": [
+    "aare",
+    "river",
+    "switzerland",
+    "hydraulic",
+    "weather",
+    "report"
+  ]
+}
