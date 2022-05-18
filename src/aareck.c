@@ -118,9 +118,8 @@ int main (int argc, char **argv) {
 
     switch (c) {
       case 'c':
-        utarray_new(requestData.cities, &ut_str_icd);
         char *cities = optarg;
-        split(cities, ' ', requestData.cities);
+        requestData.cities = split(cities, ' ');
         break;
       case 'C':
         break;
