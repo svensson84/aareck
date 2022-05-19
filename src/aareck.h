@@ -27,12 +27,21 @@ SOFTWARE.
 #ifndef AARECK_H
 #define AARECK_H
 
+#include <stdlib.h>
 #include <stdbool.h>
 #include "utarray.h"
 
+typedef u_int bitmask; 
+
+// bit masks for flag options
+#define FLAG_VERBOSE         0b000000001;
+#define FLAG_COLOR           0b000000010;
+#define FLAG_HYDRAULIC_ONLY  0b000000100;
+#define FLAG_DEFAULT_MASK    0b000000000;
+
 struct RequestData {
   UT_array *cities;
-  bool color;
+  bitmask flags;
 };
 
 #endif /* AARECK_H */

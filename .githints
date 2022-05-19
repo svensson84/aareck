@@ -1,0 +1,7 @@
+# rewrite (remote!) whole respository history so that file "password_file" never existed
+git rm password_file
+git commit -am "delete password_file"
+git filter-branch --force --index-filter \
+  'git rm --cached --ignore-unmatch password_file' \
+  --prune-empty --tag-name-filter cat -- --all
+git push -f

@@ -5,7 +5,7 @@
       "name": "C/C++ Runner: Debug Session",
       "type": "cppdbg",
       "request": "launch",
-      "args": ["-c", "Bern Thun Solothurn"],
+      "args": ["-vCc", "Bern Thun Solothurn"],
       "stopAtEntry": false,
       "cwd": "/home/sven/dev/aareck/src",
       "environment": [],

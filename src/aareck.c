@@ -35,6 +35,7 @@ SOFTWARE.
 #include "split.h"
 #include "utarray.h"
 
+/* The default values for aareck data requests */
 struct RequestData requestData;
 
 /* The official name of this program */
@@ -43,11 +44,12 @@ struct RequestData requestData;
 static struct option const long_options[] = {
   {"city", required_argument, NULL, 'c'},
   {"color", optional_argument, NULL, 'C'},
-  {"list", no_argument, NULL, 'l'},
+  {"hydraulic-only", optional_argument, NULL, 'h'},
   {"interactive", no_argument, NULL, 'i'},
+  {"list", no_argument, NULL, 'l'},
   {"send", required_argument, NULL, 's'},
   {"verbose", no_argument, NULL, 'v'},
-  {"help", no_argument, NULL, 'h'},
+  {"help", no_argument, NULL, 'H'},
   {"version", no_argument, NULL, 'V'}
 };
 
@@ -58,11 +60,12 @@ void usage () {
     "-c, --city=NAME...       restrict output to city NAME...\n"
     "-C, --color[=WHEN]       colorize the output; WHEN can be 'always' (default\n"
     "                         if omitted), 'auto', or 'never'; more info below\n"
-    "-l, --list               list available cities.\n"
+    "-h, --hydraulic-only     reports only hydraulic data.\n"
     "-i, --interactive        prompt whether to remove destinations\n"
+    "-l, --list               list available cities.\n"
     "-s, --send=MAIL_ADDRESS  send an e-mail to MAIL_ADDRESS instead of output to stdin\n"
     "-v, --verbose            verbosely output\n\n"
-    "-h, --help               display this help and exit\n"
+    "    --help               display this help and exit\n"
     "-V, --version            output version information and exit\n", stdout);
 }
 
@@ -105,43 +108,55 @@ void register_handlers() {
   }
 }
 
+void init_default_request() {
+  UT_array *cities;
+  utarray_new(cities, &ut_str_icd);
+  char *city = "Bern";
+  utarray_push_back(cities, &city);
+  requestData.cities = cities;
+  requestData.flags = FLAG_DEFAULT_MASK;
+}
+
 int main (int argc, char **argv) {
   register_handlers();
+  init_default_request();
+  int c;
 
-  while (true) {
-    int c = getopt_long(argc, argv, "c:C::lis:vhV", long_options, NULL);
-
-    if (c == -1) {
-      // set default values for requestData
-      exit(EXIT_SUCCESS);
-    }
-
+  while ((c = getopt_long(argc, argv, "c:C::hHils:vhV", long_options, NULL)) != -1) {
     switch (c) {
       case 'c':
         char *cities = optarg;
         requestData.cities = split(cities, ' ');
         break;
       case 'C':
+        requestData.flags |= FLAG_COLOR;
         break;
-      case 'l':
+      case 'h':
+        requestData.flags |= FLAG_HYDRAULIC_ONLY;
         break;
       case 'i':
+        break;
+      case 'l':
         break;
       case 's':
         break;
       case 'v':
+        requestData.flags |= FLAG_VERBOSE;
         break;
-      case 'h':
+      case 'H':
         usage();
         exit(EXIT_SUCCESS);
       case 'V':
         break;
       case -1:
-        // do rest-api call!
-        exit(EXIT_SUCCESS);
+        break;
       default:
         usage();
         exit(EXIT_FAILURE);
     }
   }
+
+  // do rest api call
+  printf("%d", requestData.flags);
+  exit(EXIT_SUCCESS);
 }
