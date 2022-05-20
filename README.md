@@ -54,8 +54,8 @@ TODO
 ~~~
 
 ## Acknowledgements
-A special thanks goes to Christian Studer and Aare.guru GmbH for using their REST-API
-I would also like to say a special thank you to Job Vranish for sharing his smart and clean Makefile
+Special thanks to Christian Studer and Aare.guru GmbH for providing their [Aare.guru API](https://aareguru.existenz.ch/ "Aare.guru API")  
+I would also like to say a special thank you to Job Vranish for sharing his smart and clean [Makefile](https://spin.atomicobject.com/2016/08/26/makefile-c-projects/ "Makefile")
 
 ## Copyright
 
