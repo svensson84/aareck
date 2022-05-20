@@ -1,5 +1,5 @@
 # c
-/bin
+/build
 
 # npm
 /npm/npm-github.env
@@ -9,3 +9,4 @@
 
 # misc
 /.dist
+*.log

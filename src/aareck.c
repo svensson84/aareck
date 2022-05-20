@@ -35,11 +35,8 @@ SOFTWARE.
 #include "split.h"
 #include "utarray.h"
 
-/* The default values for aareck data requests */
+/* Global variables */
 struct RequestData requestData;
-
-/* The official name of this program */
-#define PROGRAM_NAME "aareck"
 
 static struct option const long_options[] = {
   {"city", required_argument, NULL, 'c'},
@@ -157,6 +154,5 @@ int main (int argc, char **argv) {
   }
 
   // do rest api call
-  printf("%d", requestData.flags);
   exit(EXIT_SUCCESS);
 }

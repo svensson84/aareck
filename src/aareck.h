@@ -28,12 +28,14 @@ SOFTWARE.
 #define AARECK_H
 
 #include <stdlib.h>
-#include <stdbool.h>
 #include "utarray.h"
+
+/* The official name of this program */
+#define PROGRAM_NAME "aareck"
 
 typedef u_int bitmask; 
 
-// bit masks for flag options
+/* Bit masks for flag options */
 #define FLAG_VERBOSE         0b000000001;
 #define FLAG_COLOR           0b000000010;
 #define FLAG_HYDRAULIC_ONLY  0b000000100;
