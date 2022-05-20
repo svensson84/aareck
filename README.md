@@ -25,7 +25,7 @@
 2. [Build](#build)
 3. [Run](#run)
 4. [Examples](#examples)
-5. [Acknowledgement](#acknowledgement)
+5. [Acknowledgements](#acknowledgements)
 6. [Copyright](#copyright)
 
 ## About
