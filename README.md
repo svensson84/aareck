@@ -22,18 +22,29 @@
 
 ## Table of Contents
 1. [About](#about)
-2. [Install](#install)
-3. [Examples](#examples)
-4. [License](#license)
+2. [Build](#build)
+3. [Run](#run)
+4. [Examples](#examples)
+5. [Acknowledgement](#acknowledgement)
+6. [Copyright](#copyright)
 
 ## About
 
 TODO
 
-## Install
+## Build
 
 ~~~
-npm install aareck
+git clone https://github.com/svensson84/aareck.git ~/aareck
+cd ~/aareck
+make
+~~~
+
+## Run
+
+~~~
+cd ~/aareck/build
+./aareck
 ~~~
 
 ## Examples
@@ -42,6 +53,12 @@ npm install aareck
 TODO
 ~~~
 
-## License
+## Acknowledgements
+A special thanks goes to Christian Studer and Aare.guru GmbH for using their REST-API
+I would also like to say a special thank you to Job Vranish for sharing his smart and clean Makefile
 
-Copyright (c) 2022 Sven Zaugg <zaugg84@gmail.com>, distributed under MIT License
+## Copyright
+
+© 2022 Sven Zaugg <zaugg84@gmail.com>
+
+aareck is released under an MIT-style license; see [LICENSE](https://github.com/svensson84/aareck/blob/master/LICENSE "LICENSE") for details.
