@@ -1,6 +1,7 @@
-/* 
-aareck -- aare check; Reports hydraulic and weather data of the most beautiful river in Switzerland, "the Aare".
-   
+/*
+aareck -- aare check; Reports hydraulic and weather data of the most beautiful
+river in Switzerland, "the Aare".
+
 MIT License
 
 Copyright (c) 2022 Sven Zaugg <zaugg84@gmail.com>
@@ -28,7 +29,7 @@ SOFTWARE.
 #include <stdio.h>
 #include <stdbool.h>
 #include <sys/types.h>
-#include <getopt.h>  
+#include <getopt.h>
 #include <signal.h>
 
 #include "aareck.h"
@@ -36,7 +37,7 @@ SOFTWARE.
 #include "utarray.h"
 
 /* Global variables */
-struct RequestData requestData;
+RequestData g_request_data;
 
 static struct option const long_options[] = {
   {"city", required_argument, NULL, 'c'},
@@ -50,7 +51,7 @@ static struct option const long_options[] = {
   {"version", no_argument, NULL, 'V'}
 };
 
-void usage () {
+void show_usage() {
   printf(
     "Usage: %s [OPTION]...\n\n", PROGRAM_NAME);
   fputs(
@@ -66,16 +67,42 @@ void usage () {
     "-V, --version            output version information and exit\n", stdout);
 }
 
+void show_version() {
+  printf(
+    "aarechk %s - <https://github.com/svensson84/aareck>\n\n", PROGRAM_VERSION);
+
+  fputs(
+    "MIT license\n"
+    "Copyright (c) 2022 Sven Zaugg - zaugg84[at]gmail.com\n"
+    "Permission is hereby granted, free of charge, to any person obtaining a copy\n"
+    "of this software and associated documentation files (the \"Software\"), to deal\n"
+    "in the Software without restriction, including without limitation the rights\n"
+    "to use, copy, modify, merge, publish, distribute, sublicense, and/or sell\n"
+    "copies of the Software, and to permit persons to whom the Software is\n"
+    "furnished to do so, subject to the following conditions:\n"
+    "The above copyright notice and this permission notice shall be included in all\n"
+    "copies or substantial portions of the Software.\n"
+    "THE SOFTWARE IS PROVIDED \"AS IS\", WITHOUT WARRANTY OF ANY KIND, EXPRESS OR\n"
+    "IMPLIED, INCLUDING BUT NOT LIMITED TO THE WARRANTIES OF MERCHANTABILITY,\n"
+    "FITNESS FOR A PARTICULAR PURPOSE AND NONINFRINGEMENT. IN NO EVENT SHALL THE\n"
+    "AUTHORS OR COPYRIGHT HOLDERS BE LIABLE FOR ANY CLAIM, DAMAGES OR OTHER\n"
+    "LIABILITY, WHETHER IN AN ACTION OF CONTRACT, TORT OR OTHERWISE, ARISING FROM,\n"
+    "OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE\n"
+    "SOFTWARE.\n\n"
+    "Written by Sven Zaugg.\n", stdout);
+}
+
 void test() {
   char **p = NULL;
-  while ( (p=(char**)utarray_next(requestData.cities,p))) {
+  while ( (p=(char**)utarray_next(g_request_data.cities,p))) {
     printf("%s\n",*p);
   }
+  printf("%d\n", g_request_data.flags);
 }
 
 void free_memory() {
-  if (requestData.cities != NULL)
-    utarray_free(requestData.cities);
+  if (g_request_data.cities != NULL)
+    utarray_free(g_request_data.cities);
 }
 
 void clean_up() {
@@ -110,8 +137,8 @@ void init_default_request() {
   utarray_new(cities, &ut_str_icd);
   char *city = "Bern";
   utarray_push_back(cities, &city);
-  requestData.cities = cities;
-  requestData.flags = FLAG_DEFAULT_MASK;
+  g_request_data.cities = cities;
+  g_request_data.flags = FLAG_DEFAULT_MASK;
 }
 
 int main (int argc, char **argv) {
@@ -123,13 +150,13 @@ int main (int argc, char **argv) {
     switch (c) {
       case 'c':
         char *cities = optarg;
-        requestData.cities = split(cities, ' ');
+        g_request_data.cities = split(cities, ' ');
         break;
       case 'C':
-        requestData.flags |= FLAG_COLOR;
+        g_request_data.flags |= FLAG_COLOR;
         break;
       case 'h':
-        requestData.flags |= FLAG_HYDRAULIC_ONLY;
+        g_request_data.flags |= FLAG_HYDRAULIC_ONLY;
         break;
       case 'i':
         break;
@@ -138,17 +165,18 @@ int main (int argc, char **argv) {
       case 's':
         break;
       case 'v':
-        requestData.flags |= FLAG_VERBOSE;
+        g_request_data.flags |= FLAG_VERBOSE;
         break;
       case 'H':
-        usage();
+        show_usage();
         exit(EXIT_SUCCESS);
       case 'V':
+	show_version();
         break;
       case -1:
         break;
       default:
-        usage();
+        show_usage();
         exit(EXIT_FAILURE);
     }
   }

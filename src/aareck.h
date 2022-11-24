@@ -33,17 +33,20 @@ SOFTWARE.
 /* The official name of this program */
 #define PROGRAM_NAME "aareck"
 
-typedef u_int bitmask; 
-
+/* The official version of this program */
+#define PROGRAM_VERSION "v0.1"
+ 
 /* Bit masks for flag options */
 #define FLAG_VERBOSE         0b000000001;
 #define FLAG_COLOR           0b000000010;
 #define FLAG_HYDRAULIC_ONLY  0b000000100;
 #define FLAG_DEFAULT_MASK    0b000000000;
 
-struct RequestData {
+typedef u_int bitmask; 
+
+typedef struct {
   UT_array *cities;
   bitmask flags;
-};
+} RequestData;
 
 #endif /* AARECK_H */
