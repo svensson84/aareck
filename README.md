@@ -34,6 +34,14 @@ TODO
 
 ## Build
 
+### Prerequisites
+
+TODO 
+
+1) curl
+2) json-c library
+
+### Build Commands
 ~~~
 git clone https://github.com/svensson84/aareck.git ~/aareck
 cd ~/aareck
@@ -43,8 +51,7 @@ make
 ## Run
 
 ~~~
-cd ~/aareck/build
-./aareck
+./build/aareck
 ~~~
 
 ## Examples
