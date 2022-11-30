@@ -35,6 +35,7 @@ SOFTWARE.
 #include "aareck.h"
 #include "split.h"
 #include "utarray.h"
+#include "aare-guru-api.h"
 
 /* Global variables */
 RequestData g_request_data;
@@ -161,6 +162,7 @@ int main (int argc, char **argv) {
       case 'i':
         break;
       case 'l':
+        list_cities();
         break;
       case 's':
         break;
