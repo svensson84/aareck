@@ -46,12 +46,13 @@ TODO
 git clone https://github.com/svensson84/aareck.git ~/aareck
 cd ~/aareck
 make
+make install
 ~~~
 
 ## Run
 
 ~~~
-./build/aareck
+aareck
 ~~~
 
 ## Examples

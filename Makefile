@@ -41,10 +41,14 @@ $(BUILD_DIR)/%.cpp.o: %.cpp
 	mkdir -p $(dir $@)
 	$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@
 
+# Install step for binary
+install: $(BUILD_DIR)/$(TARGET_EXEC)
+	install -m 755 $(BUILD_DIR)/$(TARGET_EXEC) /usr/bin
 
 .PHONY: clean
 clean:
 	rm -r $(BUILD_DIR)
+	rm /usr/bin/$(TARGET_EXEC)
 
 # Include the .d makefiles. The - at the front suppresses the errors of missing
 # Makefiles. Initially, all the .d files will be missing, and we don't want those

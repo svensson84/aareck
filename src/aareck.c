@@ -62,7 +62,7 @@ void show_usage() {
     "-h, --hydraulic-only     reports only hydraulic data.\n"
     "-i, --interactive        prompt whether to remove destinations\n"
     "-l, --list               list available cities.\n"
-    "-s, --send=MAIL_ADDRESS  send an e-mail to MAIL_ADDRESS instead of output to stdin\n"
+    "-s, --status             check aareguru's rest api connection\n"
     "-v, --verbose            verbosely output\n\n"
     "    --help               display this help and exit\n"
     "-V, --version            output version information and exit\n", stdout);
