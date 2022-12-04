@@ -116,7 +116,7 @@ void sig_handler(int signo)
     printf("received SIGINT\n");
   else if (signo == SIGTERM)
     printf("received SIGTERM\n");
-  
+
   printf("freeing memory before exiting...\n");
   free_memory();
 }
@@ -163,7 +163,7 @@ int main (int argc, char **argv) {
         break;
       case 'l':
         list_cities();
-        break;
+        return 1;
       case 's':
         break;
       case 'v':
@@ -183,6 +183,6 @@ int main (int argc, char **argv) {
     }
   }
 
-  // do rest api call
+  list_measure_data(&g_request_data);
   exit(EXIT_SUCCESS);
 }

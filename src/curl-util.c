@@ -23,7 +23,7 @@ size_t write_memory_callback(void *contents, size_t size, size_t nmemb, void *us
   return realsize;
 }
 
-const char* curl(char *url) {
+const char* curl(char url[]) {
   CURL *curl_handle;
   CURLcode res;
 

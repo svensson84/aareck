@@ -5,5 +5,6 @@ extern const char* AARE_GURU_REST_API_URL;
 extern const char* AARE_GURU_REST_API_URL_PARAMETERS;
 
 void list_cities();
+void list_measure_data(RequestData *request);
 
 #endif

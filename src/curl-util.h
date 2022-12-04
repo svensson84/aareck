@@ -12,6 +12,6 @@ typedef struct MemoryStruct {
 
 size_t write_memory_callback(void *contents, size_t size, size_t nmemb, void *userp);
 
-const char* curl(char *url);
+const char* curl(char url[]);
 
 #endif
