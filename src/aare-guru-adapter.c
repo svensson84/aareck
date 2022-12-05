@@ -1,6 +1,6 @@
 #include <stdlib.h>
 #include <stdio.h>
-
+#include <string.h>
 #include <json-c/json.h>
 
 #include "aareck.h"
@@ -59,16 +59,24 @@ const char * get_json_value(json_object *json_parent, char *key) {
   return json_object_get_string(json_child);
 }
 
+json_object * get_json_object_child(json_object *json_parent, char *key) {
+  json_object *json_child;
+  int success = json_object_object_get_ex(json_parent, key, &json_child);
+  if (!success) {
+    fprintf(stderr, "TODO: error handling, key: %s\n", key);
+    exit(1);
+  }
+  return json_child;
+}
+
 UT_array * get_measurement_data(RequestData *request) {
   UT_icd measurement_data_icd = {sizeof(MeasurementData), NULL, NULL, NULL};
   UT_array *measurements;
-  MeasurementData measurement_data;
   utarray_new(measurements,&measurement_data_icd);
   char **city;
 
   while ((city=(char**)utarray_next(request->cities,city))) {
     trim_trailing(*city);
-    measurement_data.city = *city;
 
     char url[255] = "";
     strcat(url, AARE_GURU_REST_API_URL);
@@ -81,32 +89,17 @@ UT_array * get_measurement_data(RequestData *request) {
     json_object *json = json_tokener_parse(json_string);
     //printf("jobj from str:\n---\n%s\n---\n", json_object_to_json_string_ext(json, JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY));
 
-    json_object *json_aare;
-    int success = json_object_object_get_ex(json, "aare", &json_aare);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
+    json_object *json_aare = get_json_object_child(json, "aare");
+    json_object *json_weather = get_json_object_child(json, "weather");
+    json_object *json_weather_current = get_json_object_child(json_weather, "current");
 
+    MeasurementData measurement_data;
+    measurement_data.city = *city;
     measurement_data.temperature_water = get_json_value(json_aare, "temperature");
     measurement_data.temperature_water_forecast2h = get_json_value(json_aare, "forecast2h");
     measurement_data.flow = get_json_value(json_aare, "flow");
-
-    json_object *json_weather;
-    success = json_object_object_get_ex(json, "weather", &json_weather);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
-
-    json_object *json_weather_current;
-    success = json_object_object_get_ex(json_weather, "current", &json_weather_current);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
-
     measurement_data.temperature_air = get_json_value(json_weather_current, "tt");
+
     utarray_push_back(measurements, &measurement_data);
   }
   return measurements;
@@ -130,14 +123,7 @@ UT_array * get_cities() {
 
   for (i=0; i<number_of_cities; i++) {
     json_object *json_city = json_object_array_get_idx(json, i);
-
-    json_object *json_city_name;
-    int success = json_object_object_get_ex(json_city, "city", &json_city_name);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
-
+    json_object *json_city_name = get_json_object_child(json_city, "city");
     const char *city = json_object_get_string(json_city_name);
     utarray_push_back(cities, &city);
   }
@@ -147,7 +133,6 @@ UT_array * get_cities() {
 UT_array * get_report() {
   UT_icd report_data_icd = {sizeof(ReportData), NULL, NULL, NULL};
   UT_array *reports;
-  ReportData report_data;
   utarray_new(reports,&report_data_icd);
 
   char **city;
@@ -155,10 +140,6 @@ UT_array * get_report() {
 
   while ((city=(char**)utarray_next(cities,city))) {
     trim_trailing(*city);
-    report_data.city = *city;
-    //const char *city_literal;
-    //strcpy(city_literal, *city);
-    //report_data.city = *city_literal;
 
     char url[255] = "";
     strcat(url, AARE_GURU_REST_API_URL);
@@ -171,51 +152,20 @@ UT_array * get_report() {
     json_object *json = json_tokener_parse(json_string);
     //printf("jobj from str:\n---\n%s\n---\n", json_object_to_json_string_ext(json, JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY));
 
-    json_object *json_aare;
-    int success = json_object_object_get_ex(json, "aare", &json_aare);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
+    json_object *json_aare = get_json_object_child(json, "aare");
+    json_object *json_weather = get_json_object_child(json, "weather");
+    json_object *json_weather_today = get_json_object_child(json_weather, "today");
+    json_object *json_weather_afternoon = get_json_object_child(json_weather_today, "v");
+    json_object *json_weather_evening = get_json_object_child(json_weather_today, "a");
 
+    ReportData report_data;
+    report_data.city = *city;
     report_data.temperature_water = get_json_value(json_aare, "temperature");
-
-    json_object *json_weather;
-    success = json_object_object_get_ex(json, "weather", &json_weather);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
-
-    json_object *json_weather_today;
-    success = json_object_object_get_ex(json_weather, "today", &json_weather_today);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
-
-    json_object *json_weather_afternoon;
-    success = json_object_object_get_ex(json_weather_today, "v", &json_weather_afternoon);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
-
     report_data.temperature_air_afternoon = get_json_value(json_weather_afternoon, "tt");
     report_data.weather_condition = map_weather_condition_code(atoi(get_json_value(json_weather_afternoon, "symt")));
-
-    json_object *json_weather_evening;
-    success = json_object_object_get_ex(json_weather_today, "a", &json_weather_evening);
-    if (!success) {
-      fprintf(stderr, "TODO: error handling");
-      exit(1);
-    }
-
     report_data.temperature_air_evening = get_json_value(json_weather_evening, "tt");
 
     utarray_push_back(reports, &report_data);
   }
-
-  //utarray_free(cities);
   return reports;
 }
