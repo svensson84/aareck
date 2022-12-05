@@ -35,7 +35,7 @@ SOFTWARE.
 #include "aareck.h"
 #include "split.h"
 #include "utarray.h"
-#include "aare-guru-api.h"
+#include "aare-guru-adapter.h"
 
 /* Global variables */
 RequestData g_request_data;
@@ -47,7 +47,7 @@ static struct option const long_options[] = {
   {"interactive", no_argument, NULL, 'i'},
   {"list", no_argument, NULL, 'l'},
   {"send", required_argument, NULL, 's'},
-  {"verbose", no_argument, NULL, 'v'},
+  {"report", no_argument, NULL, 'r'},
   {"help", no_argument, NULL, 'H'},
   {"version", no_argument, NULL, 'V'}
 };
@@ -63,7 +63,7 @@ void show_usage() {
     "-i, --interactive        prompt whether to remove destinations\n"
     "-l, --list               list available cities.\n"
     "-s, --status             check aareguru's rest api connection\n"
-    "-v, --verbose            verbosely output\n\n"
+    "-r, --report             reports measurement data of all available cities\n\n"
     "    --help               display this help and exit\n"
     "-V, --version            output version information and exit\n", stdout);
 }
@@ -142,12 +142,49 @@ void init_default_request() {
   g_request_data.flags = FLAG_DEFAULT_MASK;
 }
 
+void list_cities() {
+  UT_array *cities = get_cities();
+  char **city;
+  int counter=0;
+
+  while ((city=(char**)utarray_next(cities ,city))) {
+    printf("(%d) %s\n", ++counter, *city);
+  }
+
+  utarray_free(cities);
+}
+
+void list_measurement_data() {
+  UT_array *measurements = get_measurement_data(&g_request_data);
+  MeasurementData *measurement_data;
+  int counter=0;
+
+  for(measurement_data=(MeasurementData*)utarray_front(measurements); measurement_data!=NULL;
+      measurement_data=(MeasurementData*)utarray_next(measurements,measurement_data)) {
+    counter++;
+    printf("measuring station:       %s\n", measurement_data->city);
+    printf("water temperature:       %s °C\n", measurement_data->temperature_water);
+    printf("water temperature in 2h: %s °C\n", measurement_data->temperature_water_forecast2h);
+    printf("water quantity:          %s m³/s\n", measurement_data->flow);
+    printf("air temperature:         %s °C\n", measurement_data->temperature_air);
+    if (utarray_len(measurements) > counter)
+      printf("\n");
+  }
+
+  utarray_free(measurements);
+}
+
+void list_report() {
+  printf("todo list_report");
+  //utarray_free(measurements);
+}
+
 int main (int argc, char **argv) {
   register_handlers();
   init_default_request();
   int c;
 
-  while ((c = getopt_long(argc, argv, "c:C::hHils:vhV", long_options, NULL)) != -1) {
+  while ((c = getopt_long(argc, argv, "c:C::hHils:rhV", long_options, NULL)) != -1) {
     switch (c) {
       case 'c':
         char *cities = optarg;
@@ -163,18 +200,18 @@ int main (int argc, char **argv) {
         break;
       case 'l':
         list_cities();
-        return 1;
+        exit(EXIT_SUCCESS);
       case 's':
         break;
-      case 'v':
-        g_request_data.flags |= FLAG_VERBOSE;
-        break;
+      case 'r':
+        list_report();
+        exit(EXIT_SUCCESS);
       case 'H':
         show_usage();
         exit(EXIT_SUCCESS);
       case 'V':
 	show_version();
-        break;
+        exit(EXIT_SUCCESS);
       case -1:
         break;
       default:
@@ -183,6 +220,6 @@ int main (int argc, char **argv) {
     }
   }
 
-  list_measure_data(&g_request_data);
+  list_measurement_data();
   exit(EXIT_SUCCESS);
 }
