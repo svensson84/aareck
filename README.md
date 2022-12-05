@@ -18,7 +18,7 @@
 [license-github-url]: https://github.com/svensson84/aareck/blob/master/LICENSE
 
 > **aareck** -- aare check  
-> Reports hydraulic and weather data of the most beautiful river in Switzerland, "the Aare".
+> Reports hydraulic and weather data from the most beautiful river in Switzerland named "Aare".
 
 ## Table of Contents
 1. [About](#about)
