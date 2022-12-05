@@ -70,7 +70,7 @@ void show_usage() {
 
 void show_version() {
   printf(
-    "aarechk %s - <https://github.com/svensson84/aareck>\n\n", PROGRAM_VERSION);
+    "aareck %s - <https://github.com/svensson84/aareck>\n\n", PROGRAM_VERSION);
 
   fputs(
     "MIT license\n"
