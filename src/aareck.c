@@ -175,8 +175,23 @@ void list_measurement_data() {
 }
 
 void list_report() {
-  printf("todo list_report");
-  //utarray_free(measurements);
+  UT_array *reports = get_report();
+  ReportData *report_data;
+  int counter=0;
+
+  for(report_data=(ReportData*)utarray_front(reports); report_data!=NULL;
+      report_data=(ReportData*)utarray_next(reports,report_data)) {
+    counter++;
+    printf("measuring station:         %s\n", report_data->city);
+    printf("water temperature:         %s °C\n", report_data->temperature_water);
+    printf("air temperature afternoon: %s °C\n", report_data->temperature_air_afternoon);
+    printf("air temperature evening:   %s °C\n", report_data->temperature_air_evening);
+    printf("weather condition:         %s\n", report_data->weather_condition);
+    if (utarray_len(reports) > counter)
+      printf("\n");
+  }
+
+  utarray_free(reports);
 }
 
 int main (int argc, char **argv) {

@@ -12,6 +12,14 @@ typedef struct {
   const char *flow;
 } MeasurementData;
 
+typedef struct {
+  const char *city;
+  const char *temperature_water;
+  const char *temperature_air_afternoon;
+  const char *temperature_air_evening;
+  const char *weather_condition;
+} ReportData;
+
 UT_array * get_cities();
 UT_array * get_report();
 UT_array * get_measurement_data(RequestData *request);
