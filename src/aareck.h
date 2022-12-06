@@ -34,7 +34,7 @@ SOFTWARE.
 #define PROGRAM_NAME "aareck"
 
 /* The official version of this program */
-#define PROGRAM_VERSION "v0.1"
+#define PROGRAM_VERSION "0.1.0"
  
 /* Bit masks for flag options */
 #define FLAG_VERBOSE         0b000000001;
