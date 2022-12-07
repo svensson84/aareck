@@ -1,5 +1,5 @@
 /*
-aareck.h -- types used by aareck
+aareck.h -- basic program data declarations
 
 MIT License
 
@@ -27,26 +27,10 @@ SOFTWARE.
 #ifndef AARECK_H
 #define AARECK_H
 
-#include <stdlib.h>
-#include "utarray.h"
-
 /* The official name of this program */
 #define PROGRAM_NAME "aareck"
 
 /* The official version of this program */
-#define PROGRAM_VERSION "0.1.0"
-
-/* Bit masks for flag options */
-#define FLAG_COLORIZE        0b000000001;
-#define FLAG_WEATHER_DATA    0b000000010;
-#define FLAG_AUTO_UPDATE     0b000000100;
-#define FLAG_DEFAULT_MASK    0b000000000;
-
-typedef u_int bitmask;
-
-typedef struct {
-  UT_array *cities;
-  bitmask flags;
-} RequestData;
+#define PROGRAM_VERSION "0.2.0"
 
 #endif /* AARECK_H */

@@ -33,22 +33,21 @@ SOFTWARE.
 #include <signal.h>
 
 #include "aareck.h"
+#include "aareck-api.h"
 #include "split.h"
 #include "utarray.h"
 #include "aare-guru-adapter.h"
 
-/* Global variables */
-RequestData g_request_data;
-
 static struct option const long_options[] = {
   {"city", required_argument, NULL, 'c'},
-  {"colorized", no_argument, NULL, 'C'},
+  {"hydrometic", no_argument, NULL, 'h'},
+  {"mixed", no_argument, NULL, 'm'},
   {"weather", no_argument, NULL, 'w'},
   {"list", no_argument, NULL, 'l'},
   {"status", no_argument, NULL, 's'},
-  {"report", no_argument, NULL, 'r'},
   {"auto-update", no_argument, NULL, 'a'},
-  {"help", no_argument, NULL, 'h'},
+  {"colorized", no_argument, NULL, 'C'},
+  {"help", no_argument, NULL, 'H'},
   {"version", no_argument, NULL, 'v'}
 };
 
@@ -60,17 +59,15 @@ void show_usage() {
     "             automatically queried.\n\n", PROGRAM_NAME);
   fputs(
     "-c, --city=NAME...       restrict output to city NAME. multiple cities are\n"
-    "                         allowed by spaces, e.g. --city='brienz thun bern'\n"
-    "                         (default is 'Bern')\n"
-    "-C, --colorized          colorize the output (default is OFF)\n"
-    "-w, --weather            reports weather data, i.e. air temperature and\n"
-    "                         weather condition of cities (default is OFF)\n"
+    "                         allowed by spaces, e.g. --city='foo bar baz'\n"
+    "-h, --hydrometric        reports mainly hydrometric data\n"
+    "-m, --mixed              reports mixed measurements\n"
+    "-w, --weather            reports current weather data and forecasts\n"
     "-l, --list               lists cities of all measuring stations\n"
     "-s, --status             check aareguru's rest api connection\n"
-    "-r, --report             reports measurement data of all available measuring\n"
-    "                         stations\n"
-    "-a  --auto-update        update measurement data in a specific time interval\n\n"
-    "-h, --help               display this help and exit\n"
+    "-a  --auto-update        update measurement data in a specific time interval\n"
+    "-C, --colorized          colorize the output\n\n"
+    "-H, --help               display this help and exit\n"
     "-v, --version            output version information and exit\n", stdout);
 }
 
@@ -99,17 +96,8 @@ void show_version() {
     "Written by Sven Zaugg.\n", stdout);
 }
 
-void test() {
-  char **p = NULL;
-  while ( (p=(char**)utarray_next(g_request_data.cities,p))) {
-    printf("%s\n",*p);
-  }
-  printf("%d\n", g_request_data.flags);
-}
-
 void free_memory() {
-  if (g_request_data.cities != NULL)
-    utarray_free(g_request_data.cities);
+  // NOOP
 }
 
 void clean_up() {
@@ -139,13 +127,13 @@ void register_handlers() {
   }
 }
 
-void init_default_request() {
+void init_default_request(RequestData *request) {
   UT_array *cities;
   utarray_new(cities, &ut_str_icd);
   char *city = "Bern";
   utarray_push_back(cities, &city);
-  g_request_data.cities = cities;
-  g_request_data.flags = FLAG_DEFAULT_MASK;
+  request->cities = cities;
+  request->flags = FLAG_DEFAULT_MASK;
 }
 
 void list_cities() {
@@ -160,19 +148,19 @@ void list_cities() {
   utarray_free(cities);
 }
 
-void list_measurement_data() {
-  UT_array *measurements = get_measurement_data(&g_request_data);
-  MeasurementData *measurement_data;
+void list_hydrometric_data(RequestData *request) {
+  UT_array *measurements = get_hydrometric_data(request);
+  HydrometricData *hydrometric_data;
   int counter=0;
 
-  for(measurement_data=(MeasurementData*)utarray_front(measurements); measurement_data!=NULL;
-      measurement_data=(MeasurementData*)utarray_next(measurements,measurement_data)) {
+  for(hydrometric_data=(HydrometricData*)utarray_front(measurements); hydrometric_data!=NULL;
+      hydrometric_data=(HydrometricData*)utarray_next(measurements,hydrometric_data)) {
     counter++;
-    printf("measuring station:       %s\n", measurement_data->city);
-    printf("water temperature:       %s °C\n", measurement_data->temperature_water);
-    printf("water temperature in 2h: %s °C\n", measurement_data->temperature_water_forecast2h);
-    printf("water quantity:          %s m³/s\n", measurement_data->flow);
-    printf("air temperature:         %s °C\n", measurement_data->temperature_air);
+    printf("measuring station:       %s\n", hydrometric_data->city);
+    printf("water temperature:       %s °C\n", hydrometric_data->temperature_water);
+    printf("water temperature in 2h: %s °C\n", hydrometric_data->temperature_water_forecast2h);
+    printf("water quantity:          %s m³/s\n", hydrometric_data->flow);
+    printf("air temperature:         %s °C\n", hydrometric_data->temperature_air);
     if (utarray_len(measurements) > counter)
       printf("\n");
   }
@@ -180,55 +168,80 @@ void list_measurement_data() {
   utarray_free(measurements);
 }
 
-void list_report() {
-  UT_array *reports = get_report();
-  ReportData *report_data;
+void list_mixed_data(RequestData *request) {
+  UT_array *measurements = get_mixed_data(request);
+  MixedData *mixed_data;
   int counter=0;
 
-  for(report_data=(ReportData*)utarray_front(reports); report_data!=NULL;
-      report_data=(ReportData*)utarray_next(reports,report_data)) {
+  for(mixed_data=(MixedData*)utarray_front(measurements); mixed_data!=NULL;
+      mixed_data=(MixedData*)utarray_next(measurements,mixed_data)) {
     counter++;
-    printf("measuring station:         %s\n", report_data->city);
-    printf("water temperature:         %s °C\n", report_data->temperature_water);
-    printf("air temperature afternoon: %s °C\n", report_data->temperature_air_afternoon);
-    printf("air temperature evening:   %s °C\n", report_data->temperature_air_evening);
-    printf("weather condition:         %s\n", report_data->weather_condition);
-    if (utarray_len(reports) > counter)
+    printf("measuring station:         %s\n", mixed_data->city);
+    printf("water temperature:         %s °C\n", mixed_data->temperature_water);
+    printf("air temperature afternoon: %s °C\n", mixed_data->temperature_air_afternoon);
+    printf("air temperature evening:   %s °C\n", mixed_data->temperature_air_evening);
+    printf("weather condition:         %s\n", mixed_data->weather_condition);
+    if (utarray_len(measurements) > counter)
       printf("\n");
   }
 
-  utarray_free(reports);
+  utarray_free(measurements);
+}
+
+void list_weather_data(RequestData *request) {
+  printf("list_weather_data(): TODO");
+}
+
+void list_measurement_data(RequestData *request) {
+  if (request->flags & FLAG_HYDROMETRIC_DATA) {
+    list_hydrometric_data(request);
+  } else if (request->flags & FLAG_MIXED_DATA) {
+    list_mixed_data(request);
+  } else if (request->flags & FLAG_WEATHER_DATA) {
+    list_weather_data(request);
+  } else {
+    // default
+    list_hydrometric_data(request);
+  }
 }
 
 int main (int argc, char **argv) {
   register_handlers();
-  init_default_request();
+
+  RequestData *request;
+  request = (RequestData*)malloc(sizeof(RequestData));
+  init_default_request(request);
+
   int c;
 
-  while ((c = getopt_long(argc, argv, "c:Cwlsrahv", long_options, NULL)) != -1) {
+  while ((c = getopt_long(argc, argv, "c:hmwlsaCHv", long_options, NULL)) != -1) {
     switch (c) {
       case 'c':
         char *cities = optarg;
-        g_request_data.cities = split(cities, ' ');
+        request->cities = split(cities, ' ');
         break;
-      case 'C':
-        g_request_data.flags |= FLAG_COLORIZE;
+      case 'h':
+        request->flags |= FLAG_HYDROMETRIC_DATA;
+        break;
+      case 'm':
+        request->flags |= FLAG_MIXED_DATA;
         break;
       case 'w':
-        g_request_data.flags |= FLAG_WEATHER_DATA;
+        request->flags |= FLAG_WEATHER_DATA;
         break;
       case 'l':
         list_cities();
         exit(EXIT_SUCCESS);
       case 's':
-        break;
-      case 'r':
-        list_report();
+        //check_state();
         exit(EXIT_SUCCESS);
       case 'a':
-        g_request_data.flags |= FLAG_AUTO_UPDATE;
+        request->flags |= FLAG_AUTO_UPDATE;
         break;
-      case 'h':
+      case 'C':
+        request->flags |= FLAG_COLORIZED;
+        break;
+      case 'H':
         show_usage();
         exit(EXIT_SUCCESS);
       case 'v':
@@ -240,6 +253,7 @@ int main (int argc, char **argv) {
     }
   }
 
-  list_measurement_data();
+  list_measurement_data(request);
+  free(request);
   exit(EXIT_SUCCESS);
 }

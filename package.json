@@ -1,6 +1,6 @@
 {
   "name": "aareck",
-  "version": "v0.1.0-rc3",
+  "version": "0.2.0",
   "description": "aareck -- aare check; Reports hydraulic and weather data of the most beautiful river in Switzerland, \"the Aare\"",
   "homepage": "https://github.com/svensson84/aareck",
   "license": "MIT",

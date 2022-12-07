@@ -69,10 +69,10 @@ json_object * get_json_object_child(json_object *json_parent, char *key) {
   return json_child;
 }
 
-UT_array * get_measurement_data(RequestData *request) {
-  UT_icd measurement_data_icd = {sizeof(MeasurementData), NULL, NULL, NULL};
+UT_array * get_hydrometric_data(RequestData *request) {
+  UT_icd hydrometric_data_icd = {sizeof(HydrometricData), NULL, NULL, NULL};
   UT_array *measurements;
-  utarray_new(measurements,&measurement_data_icd);
+  utarray_new(measurements,&hydrometric_data_icd);
   char **city;
 
   while ((city=(char**)utarray_next(request->cities,city))) {
@@ -93,14 +93,54 @@ UT_array * get_measurement_data(RequestData *request) {
     json_object *json_weather = get_json_object_child(json, "weather");
     json_object *json_weather_current = get_json_object_child(json_weather, "current");
 
-    MeasurementData measurement_data;
-    measurement_data.city = *city;
-    measurement_data.temperature_water = get_json_value(json_aare, "temperature");
-    measurement_data.temperature_water_forecast2h = get_json_value(json_aare, "forecast2h");
-    measurement_data.flow = get_json_value(json_aare, "flow");
-    measurement_data.temperature_air = get_json_value(json_weather_current, "tt");
+    HydrometricData hydrometric_data;
+    hydrometric_data.city = *city;
+    hydrometric_data.temperature_water = get_json_value(json_aare, "temperature");
+    hydrometric_data.temperature_water_forecast2h = get_json_value(json_aare, "forecast2h");
+    hydrometric_data.flow = get_json_value(json_aare, "flow");
+    hydrometric_data.temperature_air = get_json_value(json_weather_current, "tt");
 
-    utarray_push_back(measurements, &measurement_data);
+    utarray_push_back(measurements, &hydrometric_data);
+  }
+  return measurements;
+}
+
+UT_array * get_mixed_data(RequestData *request) {
+  UT_icd mixed_data_icd = {sizeof(MixedData), NULL, NULL, NULL};
+  UT_array *measurements;
+  utarray_new(measurements,&mixed_data_icd);
+
+  char **city;
+  UT_array *cities = get_cities();
+
+  while ((city=(char**)utarray_next(cities,city))) {
+    trim_trailing(*city);
+
+    char url[255] = "";
+    strcat(url, AARE_GURU_REST_API_URL);
+    strcat(url, "current?city=");
+    strcat(url, *city);
+    strcat(url, "&");
+    strcat(url, AARE_GURU_REST_API_URL_PARAMETERS);
+
+    const char *json_string = curl(url);
+    json_object *json = json_tokener_parse(json_string);
+    //printf("jobj from str:\n---\n%s\n---\n", json_object_to_json_string_ext(json, JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY));
+
+    json_object *json_aare = get_json_object_child(json, "aare");
+    json_object *json_weather = get_json_object_child(json, "weather");
+    json_object *json_weather_today = get_json_object_child(json_weather, "today");
+    json_object *json_weather_afternoon = get_json_object_child(json_weather_today, "v");
+    json_object *json_weather_evening = get_json_object_child(json_weather_today, "a");
+
+    MixedData mixed_data;
+    mixed_data.city = *city;
+    mixed_data.temperature_water = get_json_value(json_aare, "temperature");
+    mixed_data.temperature_air_afternoon = get_json_value(json_weather_afternoon, "tt");
+    mixed_data.weather_condition = map_weather_condition_code(atoi(get_json_value(json_weather_afternoon, "symt")));
+    mixed_data.temperature_air_evening = get_json_value(json_weather_evening, "tt");
+
+    utarray_push_back(measurements, &mixed_data);
   }
   return measurements;
 }
@@ -128,44 +168,4 @@ UT_array * get_cities() {
     utarray_push_back(cities, &city);
   }
   return cities;
-}
-
-UT_array * get_report() {
-  UT_icd report_data_icd = {sizeof(ReportData), NULL, NULL, NULL};
-  UT_array *reports;
-  utarray_new(reports,&report_data_icd);
-
-  char **city;
-  UT_array *cities = get_cities();
-
-  while ((city=(char**)utarray_next(cities,city))) {
-    trim_trailing(*city);
-
-    char url[255] = "";
-    strcat(url, AARE_GURU_REST_API_URL);
-    strcat(url, "current?city=");
-    strcat(url, *city);
-    strcat(url, "&");
-    strcat(url, AARE_GURU_REST_API_URL_PARAMETERS);
-
-    const char *json_string = curl(url);
-    json_object *json = json_tokener_parse(json_string);
-    //printf("jobj from str:\n---\n%s\n---\n", json_object_to_json_string_ext(json, JSON_C_TO_STRING_SPACED | JSON_C_TO_STRING_PRETTY));
-
-    json_object *json_aare = get_json_object_child(json, "aare");
-    json_object *json_weather = get_json_object_child(json, "weather");
-    json_object *json_weather_today = get_json_object_child(json_weather, "today");
-    json_object *json_weather_afternoon = get_json_object_child(json_weather_today, "v");
-    json_object *json_weather_evening = get_json_object_child(json_weather_today, "a");
-
-    ReportData report_data;
-    report_data.city = *city;
-    report_data.temperature_water = get_json_value(json_aare, "temperature");
-    report_data.temperature_air_afternoon = get_json_value(json_weather_afternoon, "tt");
-    report_data.weather_condition = map_weather_condition_code(atoi(get_json_value(json_weather_afternoon, "symt")));
-    report_data.temperature_air_evening = get_json_value(json_weather_evening, "tt");
-
-    utarray_push_back(reports, &report_data);
-  }
-  return reports;
 }
