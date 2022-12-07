@@ -42,30 +42,36 @@ RequestData g_request_data;
 
 static struct option const long_options[] = {
   {"city", required_argument, NULL, 'c'},
-  {"color", optional_argument, NULL, 'C'},
-  {"hydraulic-only", optional_argument, NULL, 'h'},
-  {"interactive", no_argument, NULL, 'i'},
+  {"colorized", no_argument, NULL, 'C'},
+  {"weather", no_argument, NULL, 'w'},
   {"list", no_argument, NULL, 'l'},
-  {"send", required_argument, NULL, 's'},
+  {"status", no_argument, NULL, 's'},
   {"report", no_argument, NULL, 'r'},
-  {"help", no_argument, NULL, 'H'},
-  {"version", no_argument, NULL, 'V'}
+  {"auto-update", no_argument, NULL, 'a'},
+  {"help", no_argument, NULL, 'h'},
+  {"version", no_argument, NULL, 'v'}
 };
 
 void show_usage() {
   printf(
-    "Usage: %s [OPTION]...\n\n", PROGRAM_NAME);
+    "Usage: %s [OPTION]...\n"
+    "aare check - reports various measurement data of the swiss river called 'aare'\n"
+    "             if the option --city is not set, the measuring station 'Bern' is\n"
+    "             automatically queried.\n\n", PROGRAM_NAME);
   fputs(
-    "-c, --city=NAME...       restrict output to city NAME...\n"
-    "-C, --color[=WHEN]       colorize the output; WHEN can be 'always' (default\n"
-    "                         if omitted), 'auto', or 'never'; more info below\n"
-    "-h, --hydraulic-only     reports only hydraulic data.\n"
-    "-i, --interactive        prompt whether to remove destinations\n"
-    "-l, --list               list available cities.\n"
+    "-c, --city=NAME...       restrict output to city NAME. multiple cities are\n"
+    "                         allowed by spaces, e.g. --city='brienz thun bern'\n"
+    "                         (default is 'Bern')\n"
+    "-C, --colorized          colorize the output (default is OFF)\n"
+    "-w, --weather            reports weather data, i.e. air temperature and\n"
+    "                         weather condition of cities (default is OFF)\n"
+    "-l, --list               lists cities of all measuring stations\n"
     "-s, --status             check aareguru's rest api connection\n"
-    "-r, --report             reports measurement data of all available cities\n\n"
-    "    --help               display this help and exit\n"
-    "-V, --version            output version information and exit\n", stdout);
+    "-r, --report             reports measurement data of all available measuring\n"
+    "                         stations\n"
+    "-a  --auto-update        update measurement data in a specific time interval\n\n"
+    "-h, --help               display this help and exit\n"
+    "-v, --version            output version information and exit\n", stdout);
 }
 
 void show_version() {
@@ -199,19 +205,17 @@ int main (int argc, char **argv) {
   init_default_request();
   int c;
 
-  while ((c = getopt_long(argc, argv, "c:C::hHils:rhV", long_options, NULL)) != -1) {
+  while ((c = getopt_long(argc, argv, "c:Cwlsrahv", long_options, NULL)) != -1) {
     switch (c) {
       case 'c':
         char *cities = optarg;
         g_request_data.cities = split(cities, ' ');
         break;
       case 'C':
-        g_request_data.flags |= FLAG_COLOR;
+        g_request_data.flags |= FLAG_COLORIZE;
         break;
-      case 'h':
-        g_request_data.flags |= FLAG_HYDRAULIC_ONLY;
-        break;
-      case 'i':
+      case 'w':
+        g_request_data.flags |= FLAG_WEATHER_DATA;
         break;
       case 'l':
         list_cities();
@@ -221,14 +225,15 @@ int main (int argc, char **argv) {
       case 'r':
         list_report();
         exit(EXIT_SUCCESS);
-      case 'H':
+      case 'a':
+        g_request_data.flags |= FLAG_AUTO_UPDATE;
+        break;
+      case 'h':
         show_usage();
         exit(EXIT_SUCCESS);
-      case 'V':
+      case 'v':
 	show_version();
         exit(EXIT_SUCCESS);
-      case -1:
-        break;
       default:
         show_usage();
         exit(EXIT_FAILURE);

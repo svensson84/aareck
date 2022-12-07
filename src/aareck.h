@@ -1,6 +1,6 @@
-/* 
+/*
 aareck.h -- types used by aareck
-   
+
 MIT License
 
 Copyright (c) 2022 Sven Zaugg <zaugg84@gmail.com>
@@ -35,14 +35,14 @@ SOFTWARE.
 
 /* The official version of this program */
 #define PROGRAM_VERSION "0.1.0"
- 
+
 /* Bit masks for flag options */
-#define FLAG_VERBOSE         0b000000001;
-#define FLAG_COLOR           0b000000010;
-#define FLAG_HYDRAULIC_ONLY  0b000000100;
+#define FLAG_COLORIZE        0b000000001;
+#define FLAG_WEATHER_DATA    0b000000010;
+#define FLAG_AUTO_UPDATE     0b000000100;
 #define FLAG_DEFAULT_MASK    0b000000000;
 
-typedef u_int bitmask; 
+typedef u_int bitmask;
 
 typedef struct {
   UT_array *cities;
