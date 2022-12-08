@@ -70,6 +70,12 @@ TODO
 TODO
 ~~~
 
+<figure>
+  <img id="uml-diagram-aareck-api-h" loading="lazy" src="docs/uml-diagram-aareck-api-h.png" alt="uml diagram">
+  <br>
+  <figcaption><b>Figure 1</b>: uml diagram for public api <i>aareck-api.h</i> (Source: Zaugg S., 2022)</figcaption>
+</figure>
+
 ### Semantic Versioning
 
 ~~~
