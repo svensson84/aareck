@@ -63,8 +63,9 @@ typedef struct {
   const char *weather_condition;
 } MixedData;
 
-void list_hydrometric_data(RequestData *request);
-void list_mixed_data(RequestData *request);
-void list_weather_data(RequestData *request);
+UT_array * get_hydrometric_data(RequestData *request);
+UT_array * get_mixed_data(RequestData *request);
+UT_array * get_weather_data(RequestData *request);
+UT_array * get_cities();
 
 #endif /* AARECK_API_H */

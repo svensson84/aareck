@@ -69,7 +69,7 @@ json_object * get_json_object_child(json_object *json_parent, char *key) {
   return json_child;
 }
 
-UT_array * get_hydrometric_data(RequestData *request) {
+UT_array * request_hydrometric_data(RequestData *request) {
   UT_icd hydrometric_data_icd = {sizeof(HydrometricData), NULL, NULL, NULL};
   UT_array *measurements;
   utarray_new(measurements,&hydrometric_data_icd);
@@ -105,13 +105,13 @@ UT_array * get_hydrometric_data(RequestData *request) {
   return measurements;
 }
 
-UT_array * get_mixed_data(RequestData *request) {
+UT_array * request_mixed_data(RequestData *request) {
   UT_icd mixed_data_icd = {sizeof(MixedData), NULL, NULL, NULL};
   UT_array *measurements;
   utarray_new(measurements,&mixed_data_icd);
 
   char **city;
-  UT_array *cities = get_cities();
+  UT_array *cities = request_cities();
 
   while ((city=(char**)utarray_next(cities,city))) {
     trim_trailing(*city);
@@ -145,7 +145,7 @@ UT_array * get_mixed_data(RequestData *request) {
   return measurements;
 }
 
-UT_array * get_cities() {
+UT_array * request_cities() {
   UT_array *cities;
   utarray_new(cities, &ut_str_icd);
 

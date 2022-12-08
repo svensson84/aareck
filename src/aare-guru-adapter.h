@@ -6,9 +6,9 @@
 extern const char* AARE_GURU_REST_API_URL;
 extern const char* AARE_GURU_REST_API_URL_PARAMETERS;
 
-UT_array * get_hydrometric_data(RequestData *request);
-UT_array * get_mixed_data(RequestData *request);
-UT_array * get_weather_data(RequestData *request);
-UT_array * get_cities();
+UT_array * request_hydrometric_data(RequestData *request);
+UT_array * request_mixed_data(RequestData *request);
+UT_array * request_weather_data(RequestData *request);
+UT_array * request_cities();
 
 #endif /* AARE_GURU_ADAPTER_H */

@@ -136,7 +136,31 @@ void init_default_request(RequestData *request) {
   request->flags = FLAG_DEFAULT_MASK;
 }
 
-void list_cities() {
+/*** START: public api implementations ***/
+
+UT_array * get_cities() {
+  // invoke aare-guru-adapter
+  return request_cities();
+}
+
+UT_array * get_hydrometric_data(RequestData *request) {
+  // invoke aare-guru-adapter
+  return request_hydrometric_data(request);
+}
+
+UT_array * get_mixed_data(RequestData *request) {
+  // invoke aare-guru-adapter
+  return request_mixed_data(request);
+}
+
+UT_array * get_weather_data(RequestData *request) {
+  // invoke aare-guru-adapter
+  // return request_weather_data(request);
+}
+
+/*** END: public api implementations ***/
+
+void show_cities() {
   UT_array *cities = get_cities();
   char **city;
   int counter=0;
@@ -148,7 +172,7 @@ void list_cities() {
   utarray_free(cities);
 }
 
-void list_hydrometric_data(RequestData *request) {
+void show_hydrometric_data(RequestData *request) {
   UT_array *measurements = get_hydrometric_data(request);
   HydrometricData *hydrometric_data;
   int counter=0;
@@ -168,7 +192,7 @@ void list_hydrometric_data(RequestData *request) {
   utarray_free(measurements);
 }
 
-void list_mixed_data(RequestData *request) {
+void show_mixed_data(RequestData *request) {
   UT_array *measurements = get_mixed_data(request);
   MixedData *mixed_data;
   int counter=0;
@@ -188,20 +212,21 @@ void list_mixed_data(RequestData *request) {
   utarray_free(measurements);
 }
 
-void list_weather_data(RequestData *request) {
-  printf("list_weather_data(): TODO");
+void show_weather_data(RequestData *request) {
+  // UT_array *measurements = get_weather_data(request);
+  printf("show_weather_data(): TODO");
 }
 
-void list_measurement_data(RequestData *request) {
+void show_measurement_data(RequestData *request) {
   if (request->flags & FLAG_HYDROMETRIC_DATA) {
-    list_hydrometric_data(request);
+    show_hydrometric_data(request);
   } else if (request->flags & FLAG_MIXED_DATA) {
-    list_mixed_data(request);
+    show_mixed_data(request);
   } else if (request->flags & FLAG_WEATHER_DATA) {
-    list_weather_data(request);
+    show_weather_data(request);
   } else {
     // default
-    list_hydrometric_data(request);
+    show_hydrometric_data(request);
   }
 }
 
@@ -230,7 +255,7 @@ int main (int argc, char **argv) {
         request->flags |= FLAG_WEATHER_DATA;
         break;
       case 'l':
-        list_cities();
+        show_cities();
         exit(EXIT_SUCCESS);
       case 's':
         //check_state();
@@ -253,7 +278,7 @@ int main (int argc, char **argv) {
     }
   }
 
-  list_measurement_data(request);
+  show_measurement_data(request);
   free(request);
   exit(EXIT_SUCCESS);
 }
