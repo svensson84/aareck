@@ -25,8 +25,10 @@
 2. [Build](#build)
 3. [Run](#run)
 4. [Examples](#examples)
-5. [Acknowledgements](#acknowledgements)
-6. [Copyright](#copyright)
+5. [Architecture]
+6. [Semantic Versioning]
+7. [Acknowledgements](#acknowledgements)
+8. [Copyright](#copyright)
 
 ## About
 
@@ -56,6 +58,20 @@ aareck
 ~~~
 
 ## Examples
+
+~~~
+TODO
+~~~
+
+## Developer Documentation
+
+### Architecture
+
+~~~
+TODO
+~~~
+
+### Semantic Versioning
 
 ~~~
 TODO
