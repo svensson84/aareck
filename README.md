@@ -25,7 +25,7 @@
 2. [Build](#build)
 3. [Run](#run)
 4. [Examples](#examples)
-5. [Developer Documentation](#developer documentation)
+5. [Documentation](#documentation)
 6. [Acknowledgements](#acknowledgements)
 7. [Copyright](#copyright)
 
@@ -62,7 +62,7 @@ aareck
 TODO
 ~~~
 
-## Developer Documentation
+## Documentation
 
 ### Architecture
 
