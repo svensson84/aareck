@@ -25,10 +25,9 @@
 2. [Build](#build)
 3. [Run](#run)
 4. [Examples](#examples)
-5. [Architecture]
-6. [Semantic Versioning]
-7. [Acknowledgements](#acknowledgements)
-8. [Copyright](#copyright)
+5. [Developer Documentation](#developer documentation)
+6. [Acknowledgements](#acknowledgements)
+7. [Copyright](#copyright)
 
 ## About
 
