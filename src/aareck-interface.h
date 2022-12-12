@@ -51,13 +51,13 @@ typedef struct {
   const char *city;
   const char *temperature_water;
   const char *temperature_water_forecast2h;
-  const char *temperature_air;
   const char *flow;
 } HydrometricData;
 
 typedef struct {
   const char *city;
   const char *temperature_water;
+  const char *temperature_air;
   const char *temperature_air_afternoon;
   const char *temperature_air_evening;
   const char *weather_condition;

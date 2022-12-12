@@ -164,7 +164,6 @@ void show_hydrometric_data(RequestData *request) {
     printf("water temperature:       %s °C\n", hydrometric_data->temperature_water);
     printf("water temperature in 2h: %s °C\n", hydrometric_data->temperature_water_forecast2h);
     printf("water quantity:          %s m³/s\n", hydrometric_data->flow);
-    printf("air temperature:         %s °C\n", hydrometric_data->temperature_air);
     if (utarray_len(measurements) > counter)
       printf("\n");
   }
@@ -182,6 +181,7 @@ void show_mixed_data(RequestData *request) {
     counter++;
     printf("measuring station:         %s\n", mixed_data->city);
     printf("water temperature:         %s °C\n", mixed_data->temperature_water);
+    printf("air temperature current    %s °C\n", mixed_data->temperature_air);
     printf("air temperature afternoon: %s °C\n", mixed_data->temperature_air_afternoon);
     printf("air temperature evening:   %s °C\n", mixed_data->temperature_air_evening);
     printf("weather condition:         %s\n", mixed_data->weather_condition);
