@@ -73,9 +73,9 @@ UT_array * request_hydrometric_data(RequestData *request) {
   UT_icd hydrometric_data_icd = {sizeof(HydrometricData), NULL, NULL, NULL};
   UT_array *measurements;
   utarray_new(measurements,&hydrometric_data_icd);
-  char **city;
+  char **city=NULL;
 
-  while ((city=(char**)utarray_next(request->cities,city))) {
+  while (city=(char**)utarray_next(request->cities,city)) {
     trim_trailing(*city);
 
     char url[255] = "";
@@ -102,6 +102,7 @@ UT_array * request_hydrometric_data(RequestData *request) {
 
     utarray_push_back(measurements, &hydrometric_data);
   }
+
   return measurements;
 }
 
@@ -109,11 +110,9 @@ UT_array * request_mixed_data(RequestData *request) {
   UT_icd mixed_data_icd = {sizeof(MixedData), NULL, NULL, NULL};
   UT_array *measurements;
   utarray_new(measurements,&mixed_data_icd);
+  char **city=NULL;
 
-  char **city;
-  UT_array *cities = request_cities();
-
-  while ((city=(char**)utarray_next(cities,city))) {
+  while (city=(char**)utarray_next(request->cities,city)) {
     trim_trailing(*city);
 
     char url[255] = "";

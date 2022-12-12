@@ -27,13 +27,14 @@ SOFTWARE.
 
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include <stdbool.h>
 #include <sys/types.h>
 #include <getopt.h>
 #include <signal.h>
 
 #include "aareck.h"
-#include "aareck-api.h"
+#include "aareck-interface.h"
 #include "split.h"
 #include "utarray.h"
 #include "aare-guru-adapter.h"
@@ -54,12 +55,12 @@ static struct option const long_options[] = {
 void show_usage() {
   printf(
     "Usage: %s [OPTION]...\n"
-    "aare check - reports various measurement data of the swiss river called 'aare'\n"
-    "             if the option --city is not set, the measuring station 'Bern' is\n"
-    "             automatically queried.\n\n", PROGRAM_NAME);
+    "aare check - Reports various measurement data of the swiss river called 'aare'.\n\n", PROGRAM_NAME);
   fputs(
+    "Mandatory arguments to long options are mandatory for short options too.\n"
     "-c, --city=NAME...       restrict output to city NAME. multiple cities are\n"
     "                         allowed by spaces, e.g. --city='foo bar baz'\n"
+    "                         --city='all' includes cities of all measuring stations\n"
     "-h, --hydrometric        reports mainly hydrometric data\n"
     "-m, --mixed              reports mixed measurements\n"
     "-w, --weather            reports current weather data and forecasts\n"
@@ -68,7 +69,10 @@ void show_usage() {
     "-a  --auto-update        update measurement data in a specific time interval\n"
     "-C, --colorized          colorize the output\n\n"
     "-H, --help               display this help and exit\n"
-    "-v, --version            output version information and exit\n", stdout);
+    "-v, --version            output version information and exit\n\n"
+    "If the option --city is not set, the measuring station 'Bern' is queried.\n\n"
+    "The options -h [1], -m [2] and -w [3] are mutually exclusive. If more than one\n"
+    "is used at the same time, the precedence in the square brackets above applies.\n", stdout);
 }
 
 void show_version() {
@@ -194,6 +198,12 @@ void show_weather_data(RequestData *request) {
 }
 
 void show_measurement_data(RequestData *request) {
+  UT_array *cities;
+  char** city = (char**)utarray_front(request->cities);
+  if (strcmp(*city, "all") == 0) {
+    request->cities = get_cities();
+  }
+
   if (request->flags & FLAG_HYDROMETRIC_DATA) {
     show_hydrometric_data(request);
   } else if (request->flags & FLAG_MIXED_DATA) {
@@ -248,7 +258,7 @@ int main (int argc, char **argv) {
       case 'v':
 	show_version();
         exit(EXIT_SUCCESS);
-      default:
+      default: 
         show_usage();
         exit(EXIT_FAILURE);
     }
