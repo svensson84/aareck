@@ -1,7 +1,7 @@
 /*
-aareck-api.h -- interface declarations for aareck which determines semantic
-                versioning, i.e. by changing these interfaces, a major release
-                will be published!
+aareck-interface.h -- interface declarations for aareck which determines
+                      semantic versioning, i.e. by changing these interfaces,
+                      a major release will be published!
 
 MIT License
 
