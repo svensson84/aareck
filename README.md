@@ -26,7 +26,8 @@
 3. [Run](#run)
 4. [Documentation](#documentation)
 5. [Acknowledgements](#acknowledgements)
-6. [Copyright](#copyright)
+7. [Sources](#sources)
+8. [Copyright](#copyright)
 
 ## About
 
@@ -83,8 +84,16 @@ Figure 2 shows an exemplary sequence to retrieve measurement data of the "Aare" 
 Special thanks to Christian Studer and Aare.guru GmbH for providing their [Aare.guru API](https://aareguru.existenz.ch/ "Aare.guru API")  
 I would also like to say a special thank you to Job Vranish for sharing his smart and clean [Makefile](https://spin.atomicobject.com/2016/08/26/makefile-c-projects/ "Makefile")
 
+## Sources
+- measurements data swiss wide: [Bundesamt für Umwelt, Abteilung Hydrologie](https://www.hydrodaten.admin.ch/de)
+- measurements data for "Olten": [TemperAare](https://temperaare.ch) App ([Android](https://play.google.com/store/apps/details?id=ch.oetiker.temp_aar_ature&hl=en&gl=US) / [iOS](https://apps.apple.com/de/app/temperaare/id1470201037)) von [Tobias Oetiker](https://www.oetiker.ch).
+- weather measurements data: [MeteoSchweiz, SwissMetNet](https://opendata.swiss/en/dataset/automatische-wetterstationen-aktuelle-messwerte)
+- weather forecasts: sponsored by [Meteotest](https://meteotest.ch/produkt/webservices)
+- measurements data are exposed by [Existenz.ch APIs](https://api.existenz.ch).
+
 ## Copyright
 
 © 2022 Sven Zaugg <zaugg84@gmail.com>
 
 aareck is released under an MIT-style license; see [LICENSE](https://github.com/svensson84/aareck/blob/master/LICENSE "LICENSE") for details.
+	
