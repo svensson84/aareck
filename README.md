@@ -73,7 +73,7 @@ TODO
 <figure>
   <img id="uml-diagram-aareck-interface-h" loading="lazy" src="docs/uml-diagram-aareck-interface-h.png" alt="uml diagram">
   <br>
-  <figcaption><b>Figure 1</b>: uml diagram for public api <i>aareck-api.h</i> (Source: Zaugg S., 2022)</figcaption>
+  <figcaption><b>Figure 1</b>: uml diagram for public interface declarations <i>aareck-interface.h</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
 ### Semantic Versioning
