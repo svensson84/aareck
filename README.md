@@ -73,7 +73,13 @@ TODO
 <figure>
   <img id="uml-diagram-aareck-interface-h" loading="lazy" src="docs/uml-diagram-aareck-interface-h.png" alt="uml diagram">
   <br>
-  <figcaption><b>Figure 1</b>: uml diagram for public interface declarations <i>aareck-interface.h</i> (Source: Zaugg S., 2022)</figcaption>
+  <figcaption><b>Figure 1</b>: uml data diagram for public interface declarations <i>aareck-interface.h</i> (Source: Zaugg S., 2022)</figcaption>
+</figure>
+
+<figure>
+  <img id="uml-diagram-aareck-sequence" loading="lazy" src="docs/uml-diagram-aareck-sequence.png" alt="uml diagram">
+  <br>
+  <figcaption><b>Figure 2</b>: uml sequence diagram for function <i>show_hydrometric_data(*request)</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
 ### Semantic Versioning
