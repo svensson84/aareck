@@ -2,15 +2,11 @@
 
 set -e
 
-PREFIX="$1"
+AARECK_ROOT="${0%/*}"
 
-if [[ -z "$PREFIX" ]]; then
-  printf '%s\n' \
-    "usage: $0 <prefix>" \
-    "  e.g. $0 /usr/local" >&2
-  exit 1
-fi
+read -p "installation path [/usr/local]: " path
+path=${path:-/usr/local}
 
-rm -f "$PREFIX/bin/aareck"
+rm -f "$path/bin/aareck"
 
-echo "aareck has been uninstalled from $PREFIX/bin/aareck"
+echo -e "\naareck has been uninstalled from $path/bin/aareck"

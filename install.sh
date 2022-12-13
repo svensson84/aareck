@@ -3,15 +3,9 @@
 set -e
 
 AARECK_ROOT="${0%/*}"
-PREFIX="$1"
 
-if [[ -z "$PREFIX" ]]; then
-  printf '%s\n' \
-    "usage: $0 <prefix>" \
-    "  e.g. $0 /usr/local" >&2
-  exit 1
-fi
+read -p "installation path [/usr/local]: " path
+path=${path:-/usr/local}
 
-install -m 755 "$AARECK_ROOT/bin/aareck" "$PREFIX/bin"
-
-echo "aareck has been installed to $PREFIX/bin/aareck"
+install -m 755 "$AARECK_ROOT/bin/aareck" "$path/bin"
+echo -e "\naareck has been installed to $path/bin/aareck"
