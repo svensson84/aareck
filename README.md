@@ -12,7 +12,7 @@
 [npm-url]: https://npmjs.com/package/aareck
 [git-shields.io-url]: https://img.shields.io/badge/git--repo-aareck.git-blue
 [git-url]: https://npmjs.com/package/aareck.git
-[gloc-shields.io-url]: https://img.shields.io/badge/gloc-1.8k-blue
+[gloc-shields.io-url]: https://img.shields.io/badge/gloc-2.0k-blue
 [gloc-github-url]: https://github.com/kas-elvirov/gloc
 [license-shields.io-url]: https://img.shields.io/badge/license-MIT-yellow
 [license-github-url]: https://github.com/svensson84/aareck/blob/master/LICENSE
@@ -24,30 +24,30 @@
 1. [About](#about)
 2. [Build](#build)
 3. [Run](#run)
-4. [Examples](#examples)
-5. [Documentation](#documentation)
-6. [Acknowledgements](#acknowledgements)
-7. [Copyright](#copyright)
+4. [Documentation](#documentation)
+5. [Acknowledgements](#acknowledgements)
+6. [Copyright](#copyright)
 
 ## About
 
-TODO
+**aareck** -- aare check is a C program (CLI) for unix/linux systems. 
+aareck reports hydrometric and weather data from the most beautiful river in Switzerland named "Aare".
 
 ## Build
 
 ### Prerequisites
 
-TODO 
+aareck depends on following C libraries: 
 
 1) curl
-2) json-c library
+2) json-c
 
 ### Build Commands
 ~~~
 git clone https://github.com/svensson84/aareck.git ~/aareck
 cd ~/aareck
-make
-make install
+sudo make
+sudo make install
 ~~~
 
 ## Run
@@ -56,19 +56,13 @@ make install
 aareck
 ~~~
 
-## Examples
-
-~~~
-TODO
-~~~
-
 ## Documentation
 
 ### Architecture
 
-~~~
-TODO
-~~~
+#### Public Interface Declarations
+Figure 1 shows aareck's public interface declarations.
+Changes in those interface declarations lead to new major realeases x.0.0 (semantic versioning)
 
 <figure>
   <img id="uml-diagram-aareck-interface-h" loading="lazy" src="docs/uml-diagram-aareck-interface-h.png" alt="uml diagram">
@@ -76,17 +70,14 @@ TODO
   <figcaption><b>Figure 1</b>: uml data diagram for public interface declarations <i>aareck-interface.h</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
+#### Sequence Diagram
+Figure 2 shows an exemplary sequence to retrieve measurement data of the "Aare" river.
+
 <figure>
   <img id="uml-diagram-aareck-sequence" loading="lazy" src="docs/uml-diagram-aareck-sequence.png" alt="uml diagram">
   <br>
   <figcaption><b>Figure 2</b>: uml sequence diagram for function <i>show_hydrometric_data(*request)</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
-
-### Semantic Versioning
-
-~~~
-TODO
-~~~
 
 ## Acknowledgements
 Special thanks to Christian Studer and Aare.guru GmbH for providing their [Aare.guru API](https://aareguru.existenz.ch/ "Aare.guru API")  
