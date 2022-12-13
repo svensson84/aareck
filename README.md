@@ -7,12 +7,12 @@
 [![license-shields.io-url][license-shields.io-url]][license-github-url] 
 
 [stable-release-shields.io-url]: https://img.shields.io/github/v/tag/aareck/aareck.svg?logo=github&color=brightgreen&label=release
-[stable-release-github-url]: https://github.com/svensson84/NOTAVAILABLE
+[stable-release-github-url]: https://github.com/svensson84/aareck/releases/tag/0.3.0
 [npm-shields.io-url]: https://img.shields.io/npm/v/aareck.svg?color=blue
 [npm-url]: https://npmjs.com/package/aareck
 [git-shields.io-url]: https://img.shields.io/badge/git--repo-aareck.git-blue
 [git-url]: https://npmjs.com/package/aareck.git
-[gloc-shields.io-url]: https://img.shields.io/badge/gloc-UNAVAILABLE-blue
+[gloc-shields.io-url]: https://img.shields.io/badge/gloc-1.8k-blue
 [gloc-github-url]: https://github.com/kas-elvirov/gloc
 [license-shields.io-url]: https://img.shields.io/badge/license-MIT-yellow
 [license-github-url]: https://github.com/svensson84/aareck/blob/master/LICENSE
