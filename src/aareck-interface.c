@@ -18,5 +18,5 @@ UT_array * get_mixed_data(RequestData *request) {
 
 UT_array * get_weather_data(RequestData *request) {
   // invoke aare-guru-adapter
-  // return request_weather_data(request);
+  return request_weather_data(request);
 }

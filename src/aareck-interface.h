@@ -1,7 +1,7 @@
 /*
-aareck-api.h -- public api for aareck which determines semantic versioning,
-                i.e. by changing these interfaces, a major release will
-                be published!
+aareck-api.h -- interface declarations for aareck which determines semantic
+                versioning, i.e. by changing these interfaces, a major release
+                will be published!
 
 MIT License
 
@@ -26,8 +26,8 @@ OUT OF OR IN CONNECTION WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE
 SOFTWARE.
 */
 
-#ifndef AARECK_API_H
-#define AARECK_API_H
+#ifndef AARECK_INTERFACE_H
+#define AARECK_INTERFACE_H
 
 #include <stdlib.h>
 #include "utarray.h"
@@ -63,9 +63,37 @@ typedef struct {
   const char *weather_condition;
 } MixedData;
 
+typedef struct {
+  const char *weather_condition_morning;
+  const char *weather_condition_afternoon;
+  const char *weather_condition_evening;
+  const char *temperature_air_morning;
+  const char *temperature_air_afternoon;
+  const char *temperature_air_evening;
+  const char *rainfall_morning;
+  const char *rainfall_afternoon;
+  const char *rainfall_evening;
+} WeatherTodayData;
+
+typedef struct {
+  const char *day;
+  const char *weather_condition;
+  const char *temperature_air_afternoon;
+  const char *temperature_air_evening;
+  const char *rainfall;
+  const char *rainfall_probability;
+} WeatherForecastData;
+
+
+typedef struct {
+  const char *city;
+  WeatherTodayData today;
+  UT_array *forecasts;
+} WeatherData;
+
 UT_array * get_hydrometric_data(RequestData *request);
 UT_array * get_mixed_data(RequestData *request);
 UT_array * get_weather_data(RequestData *request);
 UT_array * get_cities();
 
-#endif /* AARECK_API_H */
+#endif /* AARECK_INTERFACE_H */

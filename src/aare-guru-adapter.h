@@ -10,5 +10,8 @@ UT_array * request_hydrometric_data(RequestData *request);
 UT_array * request_mixed_data(RequestData *request);
 UT_array * request_weather_data(RequestData *request);
 UT_array * request_cities();
+const char * map_weather_condition_code(int code);
+const char * map_day_name(const char *code);
+
 
 #endif /* AARE_GURU_ADAPTER_H */

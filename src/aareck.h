@@ -31,6 +31,6 @@ SOFTWARE.
 #define PROGRAM_NAME "aareck"
 
 /* The official version of this program */
-#define PROGRAM_VERSION "0.2.0"
+#define PROGRAM_VERSION "0.3.0"
 
 #endif /* AARECK_H */

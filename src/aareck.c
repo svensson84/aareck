@@ -193,8 +193,49 @@ void show_mixed_data(RequestData *request) {
 }
 
 void show_weather_data(RequestData *request) {
-  // UT_array *measurements = get_weather_data(request);
-  printf("show_weather_data(): TODO");
+  UT_array *measurements = get_weather_data(request);
+  WeatherData *weather_data;
+  int counter=0;
+
+  for(weather_data=(WeatherData*)utarray_front(measurements); weather_data!=NULL;
+      weather_data=(WeatherData*)utarray_next(measurements,weather_data)) {
+    counter++;
+    printf("measuring station: %s\n", weather_data->city);
+    printf("  today\n");
+    printf("    morning    %s °C   %s mm   %s\n",
+      weather_data->today.temperature_air_morning,
+      weather_data->today.rainfall_morning,
+      weather_data->today.weather_condition_morning);
+    printf("    afternoon  %s °C   %s mm   %s\n",
+      weather_data->today.temperature_air_afternoon,
+      weather_data->today.rainfall_afternoon,
+      weather_data->today.weather_condition_afternoon);
+    printf("    evening    %s °C   %s mm   %s\n",
+      weather_data->today.temperature_air_evening,
+      weather_data->today.rainfall_evening,
+      weather_data->today.weather_condition_evening);
+
+    UT_array *forecasts = weather_data->forecasts;
+    WeatherForecastData *forecast_data;
+
+    for(forecast_data=(WeatherForecastData*)utarray_front(forecasts); forecast_data!=NULL;
+        forecast_data=(WeatherForecastData*)utarray_next(forecasts,forecast_data)) {
+      printf("  %s\n", forecast_data->day);
+      printf("    %s °C  %s °C   %s mm   %s %%   %s\n",
+        forecast_data->temperature_air_afternoon,
+        forecast_data->temperature_air_evening,
+        forecast_data->rainfall,
+        forecast_data->rainfall_probability,
+        forecast_data->weather_condition);
+    }
+
+    utarray_free(forecasts);
+
+    if (utarray_len(measurements) > counter)
+      printf("\n");
+  }
+
+  utarray_free(measurements);
 }
 
 void show_measurement_data(RequestData *request) {
