@@ -108,8 +108,7 @@ void clean_up() {
   free_memory();
 }
 
-void sig_handler(int signo)
-{
+void sig_handler(int signo) {
   if (signo == SIGINT)
     printf("received SIGINT\n");
   else if (signo == SIGTERM)
@@ -160,10 +159,17 @@ void show_hydrometric_data(RequestData *request) {
   for(hydrometric_data=(HydrometricData*)utarray_front(measurements); hydrometric_data!=NULL;
       hydrometric_data=(HydrometricData*)utarray_next(measurements,hydrometric_data)) {
     counter++;
-    printf("measuring station:       %s\n", hydrometric_data->city);
-    printf("water temperature:       %s °C\n", hydrometric_data->temperature_water);
-    printf("water temperature in 2h: %s °C\n", hydrometric_data->temperature_water_forecast2h);
-    printf("water quantity:          %s m³/s\n", hydrometric_data->flow);
+    if (request->flags & FLAG_COLORIZED) {
+      printf("\e[1mmeasuring station         %s\e[0m\n", hydrometric_data->city);
+      printf("  water temperature       \e[0;94m%s °C\e[0m\n", hydrometric_data->temperature_water);
+      printf("  water temperature in 2h \e[0;94m%s °C\e[0m\n", hydrometric_data->temperature_water_forecast2h);
+      printf("  water quantity          \e[0;34m%s m³/s\e[0m\n", hydrometric_data->flow);
+    } else {
+      printf("measuring station         %s\n", hydrometric_data->city);
+      printf("  water temperature       %s °C\n", hydrometric_data->temperature_water);
+      printf("  water temperature in 2h %s °C\n", hydrometric_data->temperature_water_forecast2h);
+      printf("  water quantity          %s m³/s\n", hydrometric_data->flow);
+    }
     if (utarray_len(measurements) > counter)
       printf("\n");
   }
@@ -179,12 +185,21 @@ void show_mixed_data(RequestData *request) {
   for(mixed_data=(MixedData*)utarray_front(measurements); mixed_data!=NULL;
       mixed_data=(MixedData*)utarray_next(measurements,mixed_data)) {
     counter++;
-    printf("measuring station:         %s\n", mixed_data->city);
-    printf("water temperature:         %s °C\n", mixed_data->temperature_water);
-    printf("air temperature current    %s °C\n", mixed_data->temperature_air);
-    printf("air temperature afternoon: %s °C\n", mixed_data->temperature_air_afternoon);
-    printf("air temperature evening:   %s °C\n", mixed_data->temperature_air_evening);
-    printf("weather condition:         %s\n", mixed_data->weather_condition);
+    if (request->flags & FLAG_COLORIZED) {
+      printf("\e[1mmeasuring station           %s\e[0m\n", mixed_data->city);
+      printf("  water temperature         \e[0;94m%s °C\e[0m\n", mixed_data->temperature_water);
+      printf("  air temperature current   \e[0;93m%s °C\e[0m\n", mixed_data->temperature_air);
+      printf("  air temperature afternoon \e[0;93m%s °C\e[0m\n", mixed_data->temperature_air_afternoon);
+      printf("  air temperature evening   \e[0;93m%s °C\e[0m\n", mixed_data->temperature_air_evening);
+      printf("  weather condition         \e[0;36m%s\e[0m\n", mixed_data->weather_condition);
+    } else {
+      printf("measuring station           %s\n", mixed_data->city);
+      printf("  water temperature         %s °C\n", mixed_data->temperature_water);
+      printf("  air temperature current   %s °C\n", mixed_data->temperature_air);
+      printf("  air temperature afternoon %s °C\n", mixed_data->temperature_air_afternoon);
+      printf("  air temperature evening   %s °C\n", mixed_data->temperature_air_evening);
+      printf("  weather condition         %s\n", mixed_data->weather_condition);
+    }
     if (utarray_len(measurements) > counter)
       printf("\n");
   }
@@ -200,20 +215,37 @@ void show_weather_data(RequestData *request) {
   for(weather_data=(WeatherData*)utarray_front(measurements); weather_data!=NULL;
       weather_data=(WeatherData*)utarray_next(measurements,weather_data)) {
     counter++;
-    printf("measuring station: %s\n", weather_data->city);
-    printf("  today\n");
-    printf("    morning    %s °C   %s mm   %s\n",
-      weather_data->today.temperature_air_morning,
-      weather_data->today.rainfall_morning,
-      weather_data->today.weather_condition_morning);
-    printf("    afternoon  %s °C   %s mm   %s\n",
-      weather_data->today.temperature_air_afternoon,
-      weather_data->today.rainfall_afternoon,
-      weather_data->today.weather_condition_afternoon);
-    printf("    evening    %s °C   %s mm   %s\n",
-      weather_data->today.temperature_air_evening,
-      weather_data->today.rainfall_evening,
-      weather_data->today.weather_condition_evening);
+    if (request->flags & FLAG_COLORIZED) {
+      printf("\e[1mmeasuring station: %s\e[0m\n", weather_data->city);
+      printf("  today\n");
+      printf("    morning    \e[0;93m%s °C\e[0m   \e[0;94m%s mm\e[0m   \e[0;36m%s\e[0m\n",
+        weather_data->today.temperature_air_morning,
+        weather_data->today.rainfall_morning,
+        weather_data->today.weather_condition_morning);
+      printf("    afternoon  \e[0;93m%s °C\e[0m   \e[0;94m%s mm\e[0m   \e[0;36m%s\e[0m\n",
+        weather_data->today.temperature_air_afternoon,
+        weather_data->today.rainfall_afternoon,
+        weather_data->today.weather_condition_afternoon);
+      printf("    evening    \e[0;93m%s °C\e[0m   \e[0;94m%s mm\e[0m   \e[0;36m%s\e[0m\n",
+        weather_data->today.temperature_air_evening,
+        weather_data->today.rainfall_evening,
+        weather_data->today.weather_condition_evening);
+    } else {
+      printf("measuring station: %s\n", weather_data->city);
+      printf("  today\n");
+      printf("    morning    %s °C   %s mm   %s\n",
+        weather_data->today.temperature_air_morning,
+        weather_data->today.rainfall_morning,
+        weather_data->today.weather_condition_morning);
+      printf("    afternoon  %s °C   %s mm   %s\n",
+        weather_data->today.temperature_air_afternoon,
+        weather_data->today.rainfall_afternoon,
+        weather_data->today.weather_condition_afternoon);
+      printf("    evening    %s °C   %s mm   %s\n",
+        weather_data->today.temperature_air_evening,
+        weather_data->today.rainfall_evening,
+        weather_data->today.weather_condition_evening);
+    }
 
     UT_array *forecasts = weather_data->forecasts;
     WeatherForecastData *forecast_data;
@@ -221,12 +253,21 @@ void show_weather_data(RequestData *request) {
     for(forecast_data=(WeatherForecastData*)utarray_front(forecasts); forecast_data!=NULL;
         forecast_data=(WeatherForecastData*)utarray_next(forecasts,forecast_data)) {
       printf("  %s\n", forecast_data->day);
-      printf("    %s °C  %s °C   %s mm   %s %%   %s\n",
-        forecast_data->temperature_air_afternoon,
-        forecast_data->temperature_air_evening,
-        forecast_data->rainfall,
-        forecast_data->rainfall_probability,
-        forecast_data->weather_condition);
+      if (request->flags & FLAG_COLORIZED) {
+        printf("    \e[0;93m%s °C  %s °C\e[0m   \e[0;94m%s mm   %s %%\e[0m   \e[0;36m%s\e[0m\n",
+          forecast_data->temperature_air_afternoon,
+          forecast_data->temperature_air_evening,
+          forecast_data->rainfall,
+          forecast_data->rainfall_probability,
+          forecast_data->weather_condition);
+      } else {
+        printf("    %s °C  %s °C   %s mm   %s %%   %s\n",
+          forecast_data->temperature_air_afternoon,
+          forecast_data->temperature_air_evening,
+          forecast_data->rainfall,
+          forecast_data->rainfall_probability,
+          forecast_data->weather_condition);
+      }
     }
 
     utarray_free(forecasts);
