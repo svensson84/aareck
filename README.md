@@ -24,8 +24,9 @@
 1. [About](#about)
 2. [Build](#build)
 3. [Run](#run)
-4. [Documentation](#documentation)
-5. [Acknowledgements](#acknowledgements)
+4. [Examples](#examples)
+5. [Documentation](#documentation)
+6. [Acknowledgements](#acknowledgements)
 7. [Sources](#sources)
 8. [Copyright](#copyright)
 
@@ -57,27 +58,78 @@ sudo make install
 aareck
 ~~~
 
+## Examples
+
+### List cities of all measuring stations
+
+~~~
+aareck -l
+~~~
+
+<figure>
+  <img id="aareck-list" loading="lazy" src="docs/aareck-list.jpg" alt="example 1">
+  <br>
+  <figcaption><b>Figure 1</b>: Example 1 <i>aareck -l</i> (Source: Zaugg S., 2022)</figcaption>
+</figure>
+
+### Report hydraulic measurements from city brienz with colorized output
+
+~~~
+aareck -hCc brienz
+~~~
+
+<figure>
+  <img id="aareck-hydraulic" loading="lazy" src="docs/aareck-hydraulic.jpg" alt="example 2">
+  <br>
+  <figcaption><b>Figure 2</b>: Example 2 <i>aareck -hCc brienz</i> (Source: Zaugg S., 2022)</figcaption>
+</figure>
+
+### Report mixed measurements from multiple cities with colorized output
+
+~~~
+aareck -mCc 'thun biel brugg'
+~~~
+
+<figure>
+  <img id="aareck-mixed" loading="lazy" src="docs/aareck-mixed.jpg" alt="example 3">
+  <br>
+  <figcaption><b>Figure 3</b>: Example 3 <i>aareck -mCc 'thun biel brugg'</i> (Source: Zaugg S., 2022)</figcaption>
+</figure>
+
+### Report weather forecast for city bern with colorized output
+
+~~~
+aareck -wCc bern
+~~~
+
+<figure>
+  <img id="aareck-weather" loading="lazy" src="docs/aareck-weather.jpg" alt="example 4">
+  <br>
+  <figcaption><b>Figure 4</b>: Example 4 <i>aareck -wCc bern/i> (Source: Zaugg S., 2022)</figcaption>
+</figure>
+
 ## Documentation
 
 ### Architecture
 
 #### Public Interface Declarations
-Figure 1 shows aareck's public interface declarations.
+Figure 5 shows aareck's public interface declarations.
 Changes in those interface declarations lead to new major realeases x.0.0 (semantic versioning)
 
 <figure>
   <img id="uml-diagram-aareck-interface-h" loading="lazy" src="docs/uml-diagram-aareck-interface-h.png" alt="uml diagram">
   <br>
-  <figcaption><b>Figure 1</b>: uml data diagram for public interface declarations <i>aareck-interface.h</i> (Source: Zaugg S., 2022)</figcaption>
+  <figcaption>
+  <b>Figure 5</b>: uml data diagram for public interface declarations <i>aareck-interface.h</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
 #### Sequence Diagram
-Figure 2 shows an exemplary sequence to retrieve measurement data of the "Aare" river.
+Figure 6 shows an exemplary sequence to retrieve measurement data of the "Aare" river.
 
 <figure>
   <img id="uml-diagram-aareck-sequence" loading="lazy" src="docs/uml-diagram-aareck-sequence.png" alt="uml diagram">
   <br>
-  <figcaption><b>Figure 2</b>: uml sequence diagram for function <i>show_hydrometric_data(*request)</i> (Source: Zaugg S., 2022)</figcaption>
+  <figcaption><b>Figure 6</b>: uml sequence diagram for function <i>show_hydrometric_data(*request)</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
 ## Acknowledgements
