@@ -71,14 +71,14 @@ aareck -l
   <figcaption><b>Figure 1</b>: Example 1 <i>aareck -l</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
-### Report hydraulic measurements from city brienz with colorized output
+### Report hydrometric measurements from city brienz with colorized output
 
 ~~~
 aareck -hCc brienz
 ~~~
 
 <figure>
-  <img id="aareck-hydraulic" width="400" loading="lazy" src="docs/aareck-hydraulic.jpg" alt="example 2">
+  <img id="aareck-hydrometric" width="400" loading="lazy" src="docs/aareck-hydrometric.jpg" alt="example 2">
   <figcaption><b>Figure 2</b>: Example 2 <i>aareck -hCc brienz</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
