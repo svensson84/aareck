@@ -68,7 +68,6 @@ aareck -l
 
 <figure>
   <img id="aareck-list" width="400" loading="lazy" src="docs/aareck-list.jpg" alt="example 1">
-  <br>
   <figcaption><b>Figure 1</b>: Example 1 <i>aareck -l</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
@@ -80,7 +79,6 @@ aareck -hCc brienz
 
 <figure>
   <img id="aareck-hydraulic" width="400" loading="lazy" src="docs/aareck-hydraulic.jpg" alt="example 2">
-  <br>
   <figcaption><b>Figure 2</b>: Example 2 <i>aareck -hCc brienz</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
@@ -92,7 +90,6 @@ aareck -mCc 'thun biel brugg'
 
 <figure>
   <img id="aareck-mixed" width="400" loading="lazy" src="docs/aareck-mixed.jpg" alt="example 3">
-  <br>
   <figcaption><b>Figure 3</b>: Example 3 <i>aareck -mCc 'thun biel brugg'</i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
@@ -104,7 +101,6 @@ aareck -wCc bern
 
 <figure>
   <img id="aareck-weather" width="400" loading="lazy" src="docs/aareck-weather.jpg" alt="example 4">
-  <br>
   <figcaption><b>Figure 4</b>: Example 4 <i>aareck -wCc bern/i> (Source: Zaugg S., 2022)</figcaption>
 </figure>
 
