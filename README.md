@@ -17,7 +17,7 @@
 [license-shields.io-url]: https://img.shields.io/badge/license-MIT-yellow
 [license-github-url]: https://github.com/svensson84/aareck/blob/master/LICENSE
 
-> **aareck** -- aare check  
+> **aareck** -- aare check
 > Reports hydrometric and weather data from the most beautiful river in Switzerland named "Aare".
 
 ## Table of Contents
@@ -41,8 +41,8 @@ aareck reports hydrometric and weather data from the most beautiful river in Swi
 
 aareck depends on following C libraries: 
 
-1) curl
-2) json-c
+1) [libcurl](https://curl.se/libcurl) >=7.87.0
+2) [json-c-0.16-20220414](https://github.com/json-c/json-c/tree/2f2ddc1f2dbca56c874e8f9c31b5b963202d80e7)
 
 ### Build Commands
 ~~~
